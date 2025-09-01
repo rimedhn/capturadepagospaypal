@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Pago con PayPal - Negocio XYZ</title>
+  <title>RMPOS</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
     body { font-family: Arial, sans-serif; background: #f5f5f5; margin: 0; padding: 0; }
@@ -21,8 +21,8 @@
 <body>
   <div class="container">
     <img src="logo.png" alt="Logo Negocio XYZ" class="logo" />
-    <h1>Negocio XYZ</h1>
-    <p>Ingrese su ID de pago para realizar el pago:</p>
+    <h1>Realiza tu pago - RM POS. Plataformas Digitales a la medida de tu negocio</h1>
+    <p id="instruccion">Ingrese su ID de pago para realizar el pago:</p>
     <form id="pago-form">
       <input type="text" id="idpago" placeholder="ID de pago" required>
       <button type="submit">Consultar</button>
@@ -48,12 +48,10 @@
     const scriptApi = "https://script.google.com/macros/s/AKfycbyiyJQc_tgS6aBtAesv8hKjXB-3CbRhXGFH0jZ2WR84NFZA_p5i0r40WCehu6j2qb4y/exec";
     let pagoActual = null;
 
-    document.getElementById("pago-form").onsubmit = async function(e) {
-      e.preventDefault();
-      const id = document.getElementById("idpago").value.trim();
+    // Función para consultar y mostrar el pago
+    async function consultarPago(id) {
       document.getElementById("mensaje").textContent = "";
       if (!id) return;
-      // Consulta el idpago en el Script
       const res = await fetch(scriptApi + "?idpago=" + id);
       const data = await res.json();
       if (data && data.idpago) {
@@ -66,10 +64,29 @@
         document.getElementById("total").textContent = total.toFixed(2);
         document.getElementById("datos-cliente").classList.remove("hidden");
         renderPayPalButton(total);
+        document.getElementById("pago-form").classList.add("hidden");
+        document.getElementById("instruccion").textContent = "Confirme y realice su pago:";
       } else {
         document.getElementById("datos-cliente").classList.add("hidden");
         document.getElementById("mensaje").innerHTML = "<span class='error'>Pago no encontrado.</span>";
       }
+    }
+
+    // Consulta automática si viene el parámetro ?idpago= en la URL
+    window.onload = function() {
+      const params = new URLSearchParams(window.location.search);
+      const idpagoParam = params.get('idpago');
+      if (idpagoParam) {
+        document.getElementById("idpago").value = idpagoParam;
+        consultarPago(idpagoParam);
+      }
+    };
+
+    // Consulta manual por formulario
+    document.getElementById("pago-form").onsubmit = function(e) {
+      e.preventDefault();
+      const id = document.getElementById("idpago").value.trim();
+      consultarPago(id);
     };
 
     function renderPayPalButton(monto) {
