@@ -39,9 +39,9 @@
       <div id="paypal-button-container"></div>
     </div>
     <div id="mensaje"></div>
-    <div id="simular-container">
+    <!-- <div id="simular-container">
   <button id="simular-btn" style="margin-top:10px;padding:7px 14px;">Simular pago</button>
-    </div>
+    </div> -->
     <div id="whatsapp-container"></div>
     <footer>
       &copy; 2025 RMPOS. Todos los derechos reservados. indime.hn@gmail.com, (+504) 9359-3126.
@@ -142,7 +142,7 @@
             });
 
             // Mostrar botón WhatsApp con resumen
-            const resumen = `Pago realizado en RMPOS\nCliente: ${pagoActual.cliente}\nID de pago: ${pagoActual.idpago}\nMonto pagado: $${monto.toFixed(2)} USD\nFecha confirmación: ${fechaConfirmacion}`;
+            const resumen = `Pago PayPal realizado en RMPOS\nCliente: ${pagoActual.cliente}\nID de pago: ${pagoActual.idpago}\nMonto pagado: $${monto.toFixed(2)} USD\nFecha confirmación: ${fechaConfirmacion}`;
             renderWhatsAppButton(resumen);
 
             document.getElementById("datos-cliente").classList.add("hidden");
@@ -160,7 +160,7 @@ document.getElementById("simular-btn").onclick = function() {
   const fechaConfirmacion = getFechaConfirmacion();
   document.getElementById("mensaje").innerHTML =
     "<span class='success'>¡Pago SIMULADO por " + pagoActual.cliente + "!</span>";
-  const resumen = `Pago realizado en RMPOS\nCliente: ${pagoActual.cliente}\nID de pago: ${pagoActual.idpago}\nMonto pagado: $${total.toFixed(2)} USD\nFecha confirmación: ${fechaConfirmacion}`;
+  const resumen = `Pago PayPal realizado en RMPOS\nCliente: ${pagoActual.cliente}\nID de pago: ${pagoActual.idpago}\nMonto pagado: $${total.toFixed(2)} USD\nFecha confirmación: ${fechaConfirmacion}`;
   renderWhatsAppButton(resumen);
   document.getElementById("datos-cliente").classList.add("hidden");
 };
